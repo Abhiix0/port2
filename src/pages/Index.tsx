@@ -1,36 +1,68 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { HeroSection } from '@/components/HeroSection';
+import { ManifestoSection } from '@/components/ManifestoSection';
+import { QuoteSection } from '@/components/QuoteSection';
 import { ProjectsSection } from '@/components/ProjectsSection';
 import { ContactSection } from '@/components/ContactSection';
 import { CustomCursor } from '@/components/CustomCursor';
 
+gsap.registerPlugin(ScrollTrigger);
+
 const Index = () => {
+  const mainRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    // Smooth scroll polyfill for older browsers
+    // Smooth scroll behavior
     document.documentElement.style.scrollBehavior = 'smooth';
-    
+
+    // GSAP ScrollTrigger refresh on load
+    ScrollTrigger.refresh();
+
+    // Section transition effects
+    const sections = document.querySelectorAll('section');
+    sections.forEach((section) => {
+      gsap.fromTo(
+        section,
+        { opacity: 0.8 },
+        {
+          opacity: 1,
+          duration: 0.5,
+          scrollTrigger: {
+            trigger: section,
+            start: "top 80%",
+            end: "top 20%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+    });
+
     return () => {
       document.documentElement.style.scrollBehavior = 'auto';
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, []);
 
   return (
     <AnimatePresence>
       <motion.div
+        ref={mainRef}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
+        transition={{ duration: 1.2 }}
         className="relative"
       >
         <CustomCursor />
-        
+
         {/* Navigation */}
         <motion.nav
           className="fixed top-0 left-0 w-full z-40 p-6 md:p-8 flex justify-between items-center mix-blend-difference"
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
         >
           <motion.a
             href="#"
@@ -40,28 +72,41 @@ const Index = () => {
           >
             portfolio.
           </motion.a>
-          
+
           <div className="flex items-center gap-6 md:gap-8">
-            <motion.a
-              href="#projects"
-              className="text-sm text-foreground/70 hover:text-foreground transition-colors"
-              whileHover={{ y: -2 }}
-            >
-              Work
-            </motion.a>
-            <motion.a
-              href="#contact"
-              className="text-sm text-foreground/70 hover:text-foreground transition-colors"
-              whileHover={{ y: -2 }}
-            >
-              Contact
-            </motion.a>
+            {[
+              { label: 'About', href: '#about' },
+              { label: 'Work', href: '#projects' },
+              { label: 'Contact', href: '#contact' },
+            ].map((item, index) => (
+              <motion.a
+                key={item.label}
+                href={item.href}
+                className="relative text-sm text-foreground/70 hover:text-foreground transition-colors group"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
+                whileHover={{ y: -2 }}
+              >
+                {item.label}
+                <motion.span
+                  className="absolute -bottom-1 left-0 h-px bg-foreground"
+                  initial={{ width: 0 }}
+                  whileHover={{ width: '100%' }}
+                  transition={{ duration: 0.3 }}
+                />
+              </motion.a>
+            ))}
           </div>
         </motion.nav>
 
-        {/* Sections */}
+        {/* Main sections */}
         <main>
           <HeroSection />
+          <div id="about">
+            <ManifestoSection />
+          </div>
+          <QuoteSection />
           <div id="projects">
             <ProjectsSection />
           </div>
@@ -70,13 +115,39 @@ const Index = () => {
           </div>
         </main>
 
-        {/* Ambient noise overlay */}
-        <div 
-          className="fixed inset-0 pointer-events-none z-[100] opacity-[0.015]"
+        {/* Ambient noise overlay for texture */}
+        <div
+          className="fixed inset-0 pointer-events-none z-[100] opacity-[0.012]"
           style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
           }}
         />
+
+        {/* Scroll progress indicator */}
+        <motion.div
+          className="fixed bottom-8 right-8 z-50 hidden md:block"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2 }}
+        >
+          <div className="w-px h-24 bg-border/30 relative overflow-hidden rounded-full">
+            <motion.div
+              className="absolute top-0 left-0 w-full bg-foreground/60"
+              style={{
+                height: '100%',
+                scaleY: 0,
+                transformOrigin: 'top',
+              }}
+              animate={{
+                scaleY: [0, 1],
+              }}
+              transition={{
+                duration: 0.5,
+                ease: "easeOut",
+              }}
+            />
+          </div>
+        </motion.div>
       </motion.div>
     </AnimatePresence>
   );
