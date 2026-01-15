@@ -82,7 +82,7 @@ export const HeroSection = () => {
   return (
     <motion.section
       ref={containerRef}
-      className="relative min-h-screen flex items-center overflow-hidden section-ambient"
+      className="relative min-h-screen flex items-center overflow-hidden bg-black"
       style={{ 
         opacity: springOpacity, 
         scale,
@@ -183,13 +183,13 @@ export const HeroSection = () => {
           }}
           transition={{ type: "spring", stiffness: 40, damping: 15 }}
         >
-          {/* White silhouette image with invert filter */}
+          {/* White silhouette - inverted black on white, blend makes white bg disappear on black */}
           <motion.img
             src={silhouetteImage}
             alt="Silhouette"
-            className="h-[85%] w-auto object-contain object-bottom select-none"
+            className="h-[85%] w-auto object-contain object-bottom select-none mix-blend-lighten"
             style={{
-              filter: 'invert(1) brightness(1.1)',
+              filter: 'invert(1)',
             }}
             whileHover={{ scale: 1.02 }}
             data-magnetic
