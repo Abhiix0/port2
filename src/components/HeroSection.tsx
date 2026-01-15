@@ -92,7 +92,7 @@ export const HeroSection = () => {
       <ParticleField />
 
       {/* Text content - LEFT SIDE */}
-      <div ref={textRef} className="container relative z-10 w-full md:w-1/2 px-8 md:px-16">
+      <div ref={textRef} className="relative z-10 w-full md:w-1/2 pl-8 md:pl-24 lg:pl-32 pr-4">
         <div className="max-w-xl">
           {textLines.map((line, index) => (
             <motion.div
@@ -169,15 +169,12 @@ export const HeroSection = () => {
         </div>
       </div>
 
-      {/* Silhouette - RIGHT SIDE with black background */}
+      {/* Silhouette - RIGHT SIDE floating on black */}
       <motion.div
         ref={silhouetteRef}
         className="absolute right-0 top-0 w-full md:w-1/2 h-full pointer-events-none"
         style={{ y: springY }}
       >
-        {/* Solid black background */}
-        <div className="absolute inset-0 bg-black" />
-        
         <motion.div
           className="relative w-full h-full flex items-end justify-center"
           animate={{
@@ -196,19 +193,6 @@ export const HeroSection = () => {
             }}
             whileHover={{ scale: 1.02 }}
             data-magnetic
-          />
-
-          {/* Subtle ambient glow under silhouette */}
-          <motion.div
-            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-32 blur-3xl pointer-events-none"
-            style={{
-              background: 'radial-gradient(ellipse, hsl(0 0% 40% / 0.4) 0%, transparent 70%)',
-            }}
-            animate={{
-              opacity: [0.2, 0.4, 0.2],
-              scale: [1, 1.1, 1],
-            }}
-            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
           />
         </motion.div>
       </motion.div>
