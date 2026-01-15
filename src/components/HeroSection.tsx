@@ -73,10 +73,10 @@ export const HeroSection = () => {
   }, []);
 
   const textLines = [
-    { text: "Hello, I'm", delay: 0 },
-    { text: "a creator", delay: 0.15 },
-    { text: "who breathes life", delay: 0.3 },
-    { text: "into pixels.", delay: 0.45 },
+    { text: "Hello, I'm Abhi.", delay: 0 },
+    { text: "Breathing.", delay: 0.15 },
+    { text: "Exhausted.", delay: 0.3 },
+    { text: "Alive.", delay: 0.45 },
   ];
 
   return (
@@ -91,55 +91,9 @@ export const HeroSection = () => {
     >
       <ParticleField />
 
-      {/* Silhouette with parallax and idle animations */}
-      <motion.div
-        ref={silhouetteRef}
-        className="absolute left-0 bottom-0 w-[55%] md:w-2/5 h-[85vh] pointer-events-none"
-        style={{ y: springY }}
-      >
-        <motion.div
-          className="relative w-full h-full"
-          animate={{
-            x: mousePos.x * 20,
-            y: mousePos.y * 15,
-            rotateY: mousePos.x * 3,
-          }}
-          transition={{ type: "spring", stiffness: 40, damping: 15 }}
-        >
-          {/* Laptop screen glow */}
-          <div 
-            className="laptop-glow absolute bottom-[35%] left-[55%] w-20 h-16 rounded-lg opacity-40 blur-xl pointer-events-none"
-            style={{
-              background: 'radial-gradient(ellipse, hsl(0 0% 50% / 0.6) 0%, transparent 70%)',
-            }}
-          />
-
-          <motion.img
-            src={silhouetteImage}
-            alt="Silhouette"
-            className="w-full h-full object-contain object-bottom opacity-95 select-none"
-            whileHover={{ scale: 1.02 }}
-            data-magnetic
-          />
-
-          {/* Subtle ambient glow under silhouette */}
-          <motion.div
-            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4/5 h-40 blur-3xl pointer-events-none"
-            style={{
-              background: 'radial-gradient(ellipse, hsl(0 0% 25% / 0.5) 0%, transparent 70%)',
-            }}
-            animate={{
-              opacity: [0.3, 0.6, 0.3],
-              scale: [1, 1.15, 1],
-            }}
-            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-          />
-        </motion.div>
-      </motion.div>
-
-      {/* Text content */}
-      <div ref={textRef} className="container relative z-10 ml-auto w-full md:w-3/5 px-8 md:px-16">
-        <div className="max-w-2xl ml-auto">
+      {/* Text content - LEFT SIDE */}
+      <div ref={textRef} className="container relative z-10 w-full md:w-1/2 px-8 md:px-16">
+        <div className="max-w-xl">
           {textLines.map((line, index) => (
             <motion.div
               key={index}
@@ -185,7 +139,7 @@ export const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 1.4, ease: [0.22, 1, 0.36, 1] }}
           >
-            Crafting digital experiences that feel alive. Every interaction is intentional, every animation tells a story.
+            Curiosity first. Progress over perfection.
           </motion.p>
 
           {/* Play button */}
@@ -215,9 +169,52 @@ export const HeroSection = () => {
         </div>
       </div>
 
-      {/* Ambient corner gradients */}
-      <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-radial from-muted/20 to-transparent pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-background via-background/50 to-transparent pointer-events-none" />
+      {/* Silhouette - RIGHT SIDE with black background */}
+      <motion.div
+        ref={silhouetteRef}
+        className="absolute right-0 top-0 w-full md:w-1/2 h-full pointer-events-none"
+        style={{ y: springY }}
+      >
+        {/* Solid black background */}
+        <div className="absolute inset-0 bg-black" />
+        
+        <motion.div
+          className="relative w-full h-full flex items-end justify-center"
+          animate={{
+            x: mousePos.x * 20,
+            y: mousePos.y * 15,
+          }}
+          transition={{ type: "spring", stiffness: 40, damping: 15 }}
+        >
+          {/* White silhouette image with invert filter */}
+          <motion.img
+            src={silhouetteImage}
+            alt="Silhouette"
+            className="h-[85%] w-auto object-contain object-bottom select-none"
+            style={{
+              filter: 'invert(1) brightness(1.1)',
+            }}
+            whileHover={{ scale: 1.02 }}
+            data-magnetic
+          />
+
+          {/* Subtle ambient glow under silhouette */}
+          <motion.div
+            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-32 blur-3xl pointer-events-none"
+            style={{
+              background: 'radial-gradient(ellipse, hsl(0 0% 40% / 0.4) 0%, transparent 70%)',
+            }}
+            animate={{
+              opacity: [0.2, 0.4, 0.2],
+              scale: [1, 1.1, 1],
+            }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </motion.div>
+      </motion.div>
+
+      {/* Ambient gradient on left side */}
+      <div className="absolute top-0 left-0 w-1/2 h-full bg-gradient-radial from-muted/10 to-transparent pointer-events-none" />
     </motion.section>
   );
 };

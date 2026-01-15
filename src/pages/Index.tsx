@@ -70,7 +70,7 @@ const Index = () => {
             whileHover={{ scale: 1.05 }}
             data-magnetic
           >
-            portfolio.
+            ASG
           </motion.a>
 
           <div className="flex items-center gap-6 md:gap-8">
