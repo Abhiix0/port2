@@ -169,14 +169,17 @@ export const HeroSection = () => {
         </div>
       </div>
 
-      {/* Silhouette - RIGHT SIDE floating on black */}
+      {/* Silhouette - RIGHT SIDE with rounded black container */}
       <motion.div
         ref={silhouetteRef}
-        className="absolute right-0 top-0 w-full md:w-1/2 h-full pointer-events-none"
+        className="absolute right-8 md:right-16 bottom-8 md:bottom-16 w-[85%] md:w-[40%] h-[70vh] pointer-events-none"
         style={{ y: springY }}
       >
+        {/* Rounded black container */}
+        <div className="absolute inset-0 bg-black rounded-3xl overflow-hidden" />
+        
         <motion.div
-          className="relative w-full h-full flex items-end justify-center"
+          className="relative w-full h-full flex items-end justify-center pb-8"
           animate={{
             x: mousePos.x * 20,
             y: mousePos.y * 15,
@@ -187,7 +190,7 @@ export const HeroSection = () => {
           <motion.img
             src={silhouetteImage}
             alt="Silhouette"
-            className="h-[85%] w-auto object-contain object-bottom select-none mix-blend-lighten"
+            className="h-[90%] w-auto object-contain object-bottom select-none mix-blend-lighten"
             style={{
               filter: 'invert(1)',
             }}
